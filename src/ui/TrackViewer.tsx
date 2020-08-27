@@ -1127,7 +1127,7 @@ export class TrackViewer extends Object2D {
                     }}
                 >
                     <div
-                        className="hpgv_track-reorder-button"
+                        className="hpgv_track-reorder-button move-up"
                         onClick={() => props.moveUp()}
                         style={{
                             position:'absolute',
@@ -1141,7 +1141,7 @@ export class TrackViewer extends Object2D {
                         {<ArrowDropUpIcon ></ArrowDropUpIcon>}
                     </div>
                     <div
-                        className="hpgv_track-reorder-button"
+                        className="hpgv_track-reorder-button move-down"
                         onClick={() => props.moveDown()}
                         style={{
                             position:'absolute',
