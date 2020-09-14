@@ -154,10 +154,10 @@ export class TrackViewer extends Object2D {
         let panels = state.panels || [];
 
         // hide/show add panel button
-        let clampToTracks = state.clampToTracks == null ? false : state.clampToTracks;
-        this.allowNewPanels = state.allowNewPanels == null ? false : state.allowNewPanels;
-        this.reorderTracks = state.reorderTracks == null ? false : state.reorderTracks;
-        this.setRemovableTracks(state.removableTracks == null ? true : state.removableTracks);
+        let clampToTracks = state.clampToTracks = !!state.clampToTracks;
+        this.allowNewPanels = state.allowNewPanels = !!state.allowNewPanels;
+        this.reorderTracks = state.reorderTracks = !!state.reorderTracks;
+        this.setRemovableTracks(state.removableTracks = !!state.removableTracks);
         this.grid.toggleChild(this.addPanelButton, this.allowNewPanels);
 
         // Panels
@@ -413,11 +413,11 @@ export class TrackViewer extends Object2D {
         this.layoutTrackRows(animate);
     }
 
-    setTrackIndex(track: Track, index: number, animate = true) {
+    setTrackIndex(track: Track, indexParam: number, animate = true) {
         // re-orders tracks in this.tracks[] and then calls this.layoutTrackRows(animate);
 
         // apply array bounds check
-        index = Math.min(Math.max(index, 0), this.tracks.length - 1);
+        const index: number = Math.min(Math.max(indexParam, 0), this.tracks.length - 1);
 
         let currentIndex = this.tracks.indexOf(track);
 
