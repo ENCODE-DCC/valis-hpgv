@@ -52633,6 +52633,15 @@ var Panel = /** @class */ (function (_super) {
             }
             var coordinates = parts[1].split('-');
             this.setContig(contig);
+            if (!coordinates) {
+                throw new Error('Coordinates are invalid');
+            }
+            if (!coordinates[0]) {
+                throw new Error('First coordinate is invalid');
+            }
+            if (!coordinates[1]) {
+                throw new Error('Second coordinate is invalid');
+            }
             var rawCoordinate0 = coordinates[0].replace(/,/g, '').trim();
             var rawCoordinate1 = coordinates[1].replace(/,/g, '').trim();
             if (rawCoordinate0 === '' || rawCoordinate1 === '') {

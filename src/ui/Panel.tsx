@@ -778,6 +778,18 @@ export class Panel extends Object2D {
             const coordinates = parts[1].split('-');
             this.setContig(contig);
 
+            if (!coordinates) {
+                throw new Error('Coordinates are invalid');
+            }
+
+            if (!coordinates[0]) {
+                throw new Error('First coordinate is invalid');
+            }
+
+            if (!coordinates[1]) {
+                throw new Error('Second coordinate is invalid');
+            }
+
             let rawCoordinate0 = coordinates[0].replace(/,/g, '').trim();
             let rawCoordinate1 = coordinates[1].replace(/,/g, '').trim();
 
