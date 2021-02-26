@@ -46605,7 +46605,7 @@ var AnnotationTrack = /** @class */ (function (_super) {
                     geneAnnotation.mask = _this;
                     geneAnnotation.forEachSubNode(function (sub) { return sub.mask = _this; });
                     // create name text
-                    var name = new Text_1.default(Fonts_1.MadaRegular, gene.name == null ? '' : gene.name, _this.compact ? 11 : 16, _this.colors['color']);
+                    var name = new Text_1.default(Fonts_1.MadaRegular, gene.name == null ? '' : gene.name, _this.compact ? 14 : 16, _this.colors['color']);
                     // name.fontSizePx = this.sharedState.style['font-size'];
                     name.strokeEnabled = (_this.colors['--stroke'][3] > 0) && (_this.sharedState.style['--stroke-width'] > 9);
                     name.strokeColor = _this.colors['--stroke'];
