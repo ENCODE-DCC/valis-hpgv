@@ -3,7 +3,8 @@ import UsageCache from "engine/ds/UsageCache";
 import Rect from "engine/ui/Rect";
 import Text from "engine/ui/Text";
 import { InternalDataSource } from "../data-source/InternalDataSource";
-import { OpenSansRegular } from "../ui/font/Fonts";
+import { MadaRegular } from "../ui/font/Fonts";
+import { CSSUtil } from "../ui/util/CSSUtil";
 import { Tile, TileLoader, TileState } from "./TileLoader";
 import { TrackModel } from "./TrackModel";
 import { Scalar } from "engine/math/Scalar";
@@ -304,6 +305,8 @@ export class TrackObject<
     // when we're waiting on data from a tile we add a complete listener to update the annotation when the data arrives
     protected createTileLoadingDependency = (tile: Tile<any>) => {
         tile.addEventListener('complete', this.onDependentTileComplete);
+        tile.addEventListener('load-failed', this.onLoadFailed);            
+
         return tile;
     }
 
@@ -315,6 +318,10 @@ export class TrackObject<
         this.triggerDisplayUpdate();
     }
 
+    protected onLoadFailed = () => {
+        this.loadingIndicator.string = 'Track could not be loaded';
+        this.loadingIndicator.color = [1, 0, 0, 1];
+    }
 }
 
 export enum AxisPointerStyle {
@@ -397,7 +404,8 @@ export class HighlightPointer extends Rect {
 class LoadingIndicator extends Text {
 
     constructor() {
-        super(OpenSansRegular, 'Loading', 12, [1, 1, 1, 1]);
+        const fontSize: number = CSSUtil.baseFontSize;
+        super(MadaRegular, 'Loading', fontSize, [1, 1, 1, 1]);
     }
 
 }
