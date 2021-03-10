@@ -95,7 +95,6 @@ function saveSequence(sequence, directory) {
     return filesWritten;
 }
 // @! temporary to generate genes from custom biobureau files
-// @! not sure how this translates into files from other sources
 function biobureauGenerateGenes(inputFilePath, outputDirectory, vcf) {
     const lodLevel0TileSize = 1 << 20;
     let biobureauFilenameMatch = /^LF_itr6_\d+_([^\.]+)/.exec(path.basename(inputFilePath));
