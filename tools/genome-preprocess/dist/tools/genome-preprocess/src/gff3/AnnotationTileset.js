@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnnotationTileset = void 0;
-const AnnotationTypes_1 = require("../../../../src/track/annotation/AnnotationTypes");
+const AnnotationTypes_1 = require("./AnnotationTypes");
 class AnnotationTileset {
     constructor(tileSize, topLevelOnly, onUnknownFeature, onError) {
         this.tileSize = tileSize;
