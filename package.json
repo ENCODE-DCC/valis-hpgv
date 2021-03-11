@@ -26,7 +26,7 @@
     "genomic-reader": "^1.4.7",
     "genomics-formats": "github:VALIS-software/Genomics-Formats",
     "mkdirp": "^0.5.1",
-    "parcel": "^1.12.3",
+    "parcel": "1.12.3",
     "react": "16.x",
     "react-dom": "16.x",
     "string-split-by": "^1.0.0"
