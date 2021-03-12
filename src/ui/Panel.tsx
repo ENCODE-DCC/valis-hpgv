@@ -774,7 +774,7 @@ export class Panel extends Object2D {
             let contig = parts[0];
 
             if (!contig) {
-                throw new Error('Chromosome is invalid');
+                throw new Error('Chromosome is missing');
             }
 
             // make chrx to chrX
@@ -784,22 +784,22 @@ export class Panel extends Object2D {
             }
 
             if (!parts[1]) {
-                throw new Error('Coordinates are invalid or missing');
+                throw new Error('Coordinates are missing');
             }
 
             const coordinates = parts[1].split('-');
             this.setContig(contig);
 
             if (!coordinates) {
-                throw new Error('Coordinates are invalid');
+                throw new Error('Coordinates are missing');
             }
 
             if (!coordinates[0]) {
-                throw new Error('First coordinate is invalid');
+                throw new Error('First coordinate is missing');
             }
 
             if (!coordinates[1]) {
-                throw new Error('Second coordinate is invalid');
+                throw new Error('Second coordinate is missing');
             }
 
             let rawCoordinate0 = coordinates[0].replace(/,/g, '').trim();
