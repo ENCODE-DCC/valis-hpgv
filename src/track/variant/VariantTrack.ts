@@ -94,7 +94,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                             let altIndex = 0;
                             let refSpan = variant.refSequence.length;
 
-                            let color: Array<number> = [1, 0, 0, 1.0]; // default to deletion
+                            let color: Array<number> = [0, 1.0, 0, 1.0]; // default to deletion
 
                             for (let altSequence of variant.alts) {
                                 let altSpan = altSequence.length;
@@ -104,7 +104,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                                 // generate color from lengthDelta
                                 let opacity = 1;
                                 if (lengthDelta === 0) {
-                                    color = [1.0, 1.0, 1.0, opacity];
+                                    color = [0.8, 0.3, 0.1, opacity];
                                 } else if (lengthDelta < 0) {
                                     color = [1.0, 0.3, 0.5, opacity];
                                 } else {
