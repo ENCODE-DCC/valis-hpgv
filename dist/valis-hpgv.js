@@ -79495,7 +79495,7 @@ var VariantTrack = /** @class */ (function (_super) {
                                 var startIndex = variant.baseIndex;
                                 var altIndex = 0;
                                 var refSpan = variant.refSequence.length;
-                                var color = [1, 0, 0, 1.0]; // default to deletion
+                                var color = [0, 1.0, 0, 1.0]; // default to deletion
                                 try {
                                     for (var _e = __values(variant.alts), _f = _e.next(); !_f.done; _f = _e.next()) {
                                         var altSequence = _f.value;
@@ -79504,7 +79504,7 @@ var VariantTrack = /** @class */ (function (_super) {
                                         // generate color from lengthDelta
                                         var opacity = 1;
                                         if (lengthDelta === 0) {
-                                            color = [1.0, 1.0, 1.0, opacity];
+                                            color = [0.8, 0.3, 0.1, opacity];
                                         }
                                         else if (lengthDelta < 0) {
                                             color = [1.0, 0.3, 0.5, opacity];
