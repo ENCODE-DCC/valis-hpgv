@@ -18,6 +18,11 @@ let config = {
             displayLabels: false,
         },
         {
+            name: 'test VCF',
+            type: 'variant',
+            path: 'https://encoded-build.s3.amazonaws.com/browser/GRCh38/test.vcf.vvariants-dir',
+        },
+       {
             name: 'bigBed',
             type: 'annotation',
             path: 'https://www.encodeproject.org/files/ENCFF609BMS/@@download/ENCFF609BMS.bigBed',
