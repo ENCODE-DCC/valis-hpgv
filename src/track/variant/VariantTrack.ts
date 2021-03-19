@@ -104,9 +104,9 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                                 // generate color from lengthDelta
                                 let opacity = 1;
                                 if (lengthDelta === 0) {
-                                    color = [0.8, 0.3, 0.1, opacity];
+                                    color = [0.1, 0.3, 0.1, opacity];
                                 } else if (lengthDelta < 0) {
-                                    color = [0.3, 1.0, 0.5, opacity];
+                                    color = [0.66, 0.07, 0.09, opacity];
                                 } else {
                                     color = [0.3, 0.3, 0.3, opacity];
                                 }
@@ -193,7 +193,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                                 if (lengthDelta === 0) {
                                     color = [0.1, 0.1, 0.1, opacity];
                                 } else if (lengthDelta < 0) {
-                                    color = [1, 0.3, 0.3, opacity];
+                                    color = [0.66, 0.07, 0.09, opacity];
                                 } else {
                                     color = [0, 1, 0, opacity];
                                 }
@@ -253,7 +253,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
 
                         let instancesTile = new IntervalInstances(instanceData);
                         instancesTile.minWidth = 1.0;
-                        instancesTile.additiveBlending = 1.0; // full additive blending
+                        instancesTile.additiveBlending = 0.0; // full additive blending
                         instancesTile.y = tileY;
                         instancesTile.z = 0.75;
                         instancesTile.mask = this;
