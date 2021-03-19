@@ -51229,10 +51229,10 @@ var VariantTrack = /** @class */ (function (_super) {
                                         // generate color from lengthDelta
                                         var opacity = 1;
                                         if (lengthDelta === 0) {
-                                            color = [0.8, 0.3, 0.1, opacity];
+                                            color = [0.1, 0.3, 0.1, opacity];
                                         }
                                         else if (lengthDelta < 0) {
-                                            color = [0.3, 1.0, 0.5, opacity];
+                                            color = [0.66, 0.07, 0.09, opacity];
                                         }
                                         else {
                                             color = [0.3, 0.3, 0.3, opacity];
@@ -51301,7 +51301,7 @@ var VariantTrack = /** @class */ (function (_super) {
                                             color = [0.1, 0.1, 0.1, opacity];
                                         }
                                         else if (lengthDelta < 0) {
-                                            color = [1, 0.3, 0.3, opacity];
+                                            color = [0.66, 0.07, 0.09, opacity];
                                         }
                                         else {
                                             color = [0, 1, 0, opacity];
