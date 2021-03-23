@@ -18,9 +18,9 @@ let config = {
             displayLabels: false,
         },
         {
-            name: 'test VCF',
+            name: 'dbSNP (153)',
             type: 'variant',
-            path: 'https://encoded-build.s3.amazonaws.com/browser/GRCh38/test.vcf.vvariants-dir',
+            path: 'https://encoded-build.s3.amazonaws.com/browser/GRCh38/GRCh38-dbSNP153.vvariants-dir',
         },
        {
             name: 'bigBed',
