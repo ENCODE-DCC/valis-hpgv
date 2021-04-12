@@ -79469,7 +79469,7 @@ var VariantTrack = /** @class */ (function (_super) {
                 macroOpacity = 0;
             }
             // micro-scale details
-            if (microOpacity_1 > 0) {
+            if (true) {
                 tileLoader.forEachTile(this.x0, this.x1, basePairsPerDOMPixel, true, function (tile) {
                     var e_1, _a, e_2, _b;
                     if (tile.state !== TileLoader_1.TileState.Complete) {
@@ -79488,7 +79488,7 @@ var VariantTrack = /** @class */ (function (_super) {
                     textOpacity = textOpacity * textOpacity;
                     // suboptimal: draw each character individually; would be faster be using a batch text object
                     // display text
-                    if (textOpacity > 0 && textSizePx > 0) {
+                    if (true) {
                         try {
                             for (var _c = __values(tile.payload), _d = _c.next(); !_d.done; _d = _c.next()) {
                                 var variant = _d.value;

@@ -65,7 +65,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
             }
 
             // micro-scale details
-            if (microOpacity > 0) {
+            if (true || microOpacity > 0) {
                 tileLoader.forEachTile(this.x0, this.x1, basePairsPerDOMPixel, true, (tile) => {
                     if (tile.state !== TileState.Complete) {
                         return;
@@ -87,7 +87,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
 
                     // suboptimal: draw each character individually; would be faster be using a batch text object
                     // display text
-                    if (textOpacity > 0 && textSizePx > 0) {
+                    if (true || (textOpacity > 0 && textSizePx > 0)) {
                         for (let variant of tile.payload) {
                             let startIndex = variant.baseIndex;
 
