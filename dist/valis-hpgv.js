@@ -20065,7 +20065,7 @@ var GPUDevice = /** @class */ (function () {
                         var columnBytesOffset = (r * sourceColumns * exports.dataTypeByteLength[sourceDataType]);
                         // console.log('enableVertexAttribArray', row);
                         gl.enableVertexAttribArray(row);
-                        gl.vertexAttribPointer(row, sourceColumns, sourceDataType, !!attributeBuffer.normalize, attributeBuffer.strideBytes,
+                        gl.vertexAttribPointer(row, sourceColumns, sourceDataType, !!attributeBuffer.normalize, attributeBuffer.strideBytes, 
                         // offset of attribute row
                         attributeBuffer.offsetBytes + columnBytesOffset);
                         if (this.extInstanced) {
@@ -20735,7 +20735,7 @@ var Renderer = /** @class */ (function () {
         pass.root.applyTransformToSubNodes(true);
         // render-state = transparent, programId, vertexStateId, blendMode, user
         // when transparent, z sort should override everything, but same-z should still sort by state
-        // when opaque, z sort should come after user sort and depth within tree
+        // when opaque, z sort should come after user sort and depth within tree 
         //		programId, vertexStateId, blendMode, user-state, z, tree-depth
         // to avoid re-allocating a new array each frame, we reuse display list arrays from the previous frame and trim any excess
         var opaqueIndex = 0;
@@ -20971,7 +20971,7 @@ var Renderer = /** @class */ (function () {
                 this.extVao.bindVertexArrayOES(internal.gpuVertexState.native);
             }
             else {
-                // handle setting vertex state when VAO extension is not available
+                // handle setting vertex state when VAO extension is not available 
                 // WebGL requires that all enabled attribute vertex arrays must have valid buffers, whether consumed by shader or not
                 // to work around this we disable all vertex arrays enabled by the last layout
                 // applying the new layout then re-enables just the vertex arrays required
@@ -22980,7 +22980,7 @@ function eventTargetAgnosticAddListener(emitter, name, listener, flags) {
  * LICENSE file in the root directory of this source tree.
  *
  * @typechecks
- *
+ * 
  */
 
 /*eslint-disable no-self-compare */
@@ -74220,7 +74220,7 @@ var GenomeVisualizer = /** @class */ (function () {
             React.createElement(AppCanvas_1.AppCanvas, { ref: function (v) {
                     _this.appCanvasRef = v;
                     _this.startFrameLoop();
-                }, width: width, height: height, className: 'hpgv', content: this.trackViewer, pixelRatio: props.pixelRatio || window.devicePixelRatio || 1, style: __assign({
+                }, width: width, height: height, className: 'hpgv', content: this.trackViewer, pixelRatio: props.pixelRatio || window.devicePixelRatio || 1, style: __assign({ 
                     // default style
                     fontFamily: 'Mada, sans-serif' }, props.style), onWillUnmount: function () {
                     _this.stopFrameLoop();
@@ -75695,7 +75695,7 @@ var TrackObject = /** @class */ (function (_super) {
             this.add(highlightPointer);
             this.highlightPointers[id] = highlightPointer;
         }
-        highlightPointer.color = [0.957, 0.886, 0.478, 1]; // hex:
+        highlightPointer.color = [0.957, 0.886, 0.478, 1]; // hex: 
         highlightPointer.render = withinBounds;
         if (!(this.highlightLocation)) {
             highlightPointer.render = false;
@@ -76959,7 +76959,7 @@ var AnnotationTrack = /** @class */ (function (_super) {
                             color = rgbaLerp(color, maxScoreColor, Math.max(0, Math.min(1, gene.score / 1000)));
                         }
                         var colorLowerAlpha = color.slice();
-                        colorLowerAlpha[3] *= .689655172;
+                        colorLowerAlpha[3] *= 0.1;
                         if (_this.compact) {
                             instanceData.push({
                                 x: 0,
@@ -77994,7 +77994,7 @@ var SequenceTileLoader = /** @class */ (function (_super) {
         var samplingDensity = (1 << lodLevel);
         var lodSpan = span / samplingDensity;
         var lodStartBaseIndex = startBaseIndex / samplingDensity;
-        // @! data format may change for certain LODs in the future
+        // @! data format may change for certain LODs in the future	
         var elementSize_bits = 8;
         var dataPromise = this.loadArray(binPath, elementSize_bits, lodStartBaseIndex * 4, lodSpan * 4, ArrayFormat.UInt8);
         var minMaxPromise = this.minMaxCache[minMaxPath];
@@ -78019,7 +78019,7 @@ var SequenceTileLoader = /** @class */ (function (_super) {
         var byte0 = Math.floor(element0_bits / 8);
         var nBytes = Math.ceil(nElements * elementSize_bits / 8);
         var offset_bits = element0_bits % 8;
-        // determine byte range from dataFormat
+        // determine byte range from dataFormat	
         var byteRange = {
             start: byte0,
             end: byte0 + nBytes - 1,
@@ -78037,7 +78037,7 @@ var SequenceTileLoader = /** @class */ (function (_super) {
             var unpackingRequired = !((targetFormat === ArrayFormat.UInt8) && (elementSize_bits === 8));
             if (unpackingRequired) {
                 var bytes = new Uint8Array(a.data);
-                // allocate output
+                // allocate output	
                 var outputArray = void 0;
                 switch (targetFormat) {
                     case ArrayFormat.Float32:
@@ -79078,7 +79078,7 @@ var SignalTrack = /** @class */ (function (_super) {
             }
             finally { if (e_1) throw e_1.error; }
         }
-        // if primary is set and visible then
+        // if primary is set and visible then 
         if (primary != null && primary.render) {
             var pointerTrackRelativeX = primary.relativeX;
             var currentReadingLod = Infinity;
@@ -82630,7 +82630,7 @@ exports.DEFAULT_SPRING = {
     - Manages frame loop
     - Manages root scene node and coordinate system
     - All coordinates are set in DOM pixel units relative to the canvas (unless marked as otherwise)
-
+    
     - Should split up and move core parts to engine
 */
 var __extends = (this && this.__extends) || (function () {
@@ -83063,7 +83063,7 @@ var AppCanvas = /** @class */ (function (_super) {
         var _loop_1 = function (pointerId) {
             var inactivePointer = this_1._lastActivePointers[pointerId];
             if (this_1.activePointers[pointerId] === undefined) {
-                // pointer became inactive, fire 'pointerleave' on all nodes it was hitting
+                // pointer became inactive, fire 'pointerleave' on all nodes it was hitting 
                 this_1.executePointerInteraction(inactivePointer.lastHitNodes, 'pointerleave', inactivePointer.interactionData, function (init) { return new InteractionEvent_1.default(init, inactivePointer.sourceEvent); });
             }
         };
@@ -83636,7 +83636,7 @@ var IntervalInstances = /** @class */ (function (_super) {
         return device.createVertexState({
             indexBuffer: SharedResources_1.default.getQuadIndexBuffer(device),
             attributeLayout: attributeLayout,
-            attributes: __assign({
+            attributes: __assign({ 
                 // vertices
                 'position': {
                     buffer: SharedResources_1.default.getQuad1x1VertexBuffer(device),

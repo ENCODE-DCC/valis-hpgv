@@ -328,7 +328,7 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                     }
 
                     let colorLowerAlpha = color.slice();
-                    colorLowerAlpha[3] *= .689655172;
+                    colorLowerAlpha[3] *= 0.1;
 
                     if (this.compact) {
                         instanceData.push({
