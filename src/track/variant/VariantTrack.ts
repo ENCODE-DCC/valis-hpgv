@@ -104,7 +104,8 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                                 // generate color from lengthDelta
                                 let opacity = 1;
                                 if (lengthDelta === 0) {
-                                    color = [0.1, 0.3, 0.1, opacity];
+                                    color = [0.1, 0.30, 0.30, opacity];
+                                    //94, 130, 130
                                 } else if (lengthDelta < 0) {
                                     color = [0.66, 0.07, 0.09, opacity];
                                 } else {
@@ -191,7 +192,7 @@ export class VariantTrack<Model extends VariantTrackModel = VariantTrackModel> e
                                 // generate color from lengthDelta
                                 let opacity = 0.7;
                                 if (lengthDelta === 0) {
-                                    color = [0.1, 0.1, 0.1, opacity];
+                                    color = [0.1, 0.30, 0.30, opacity];
                                 } else if (lengthDelta < 0) {
                                     color = [0.66, 0.07, 0.09, opacity];
                                 } else {
