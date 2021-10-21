@@ -34,6 +34,7 @@ export interface GenomeVisualizerRenderProps {
     pixelRatio?: number,
     style?: React.CSSProperties,
     highlightLocation?: string,
+    highlightLocation2?: string,
 }
 
 interface CustomTileLoader<ModelType> {
@@ -138,11 +139,11 @@ export class GenomeVisualizer {
         }
     }
 
-    addTrack(model: TrackModel, animateIn: boolean = true, highlightLocation: string) {
-        return this.trackViewer.addTrack(model, animateIn, highlightLocation);
+    addTrack(model: TrackModel, animateIn: boolean = true, highlightLocation: string, highlightLocation2: string) {
+        return this.trackViewer.addTrack(model, animateIn, highlightLocation, highlightLocation2);
     }
 
-    addTrackFromFilePath(path: string, name?: string, animateIn?: boolean, highlightLocation?: string) {
+    addTrackFromFilePath(path: string, name?: string, animateIn?: boolean, highlightLocation?: string, highlightLocation2?: string) {
         // we don't know what contigs are available so we must read the first file for this
         let basename = path.split('/').pop().split('\\').pop();
         let parts = basename.split('.');
@@ -160,7 +161,7 @@ export class GenomeVisualizer {
                     name: trackName,
                     path: path,
                 };
-                return this.addTrack(model, animateIn, highlightLocation);
+                return this.addTrack(model, animateIn, highlightLocation, highlightLocation2);
             }
             case GenomicFileFormat.ValisGenes:
             case GenomicFileFormat.BigBed:
@@ -170,7 +171,7 @@ export class GenomeVisualizer {
                     name: trackName,
                     path: path,
                 };
-                return this.addTrack(model, animateIn, highlightLocation);
+                return this.addTrack(model, animateIn, highlightLocation, highlightLocation2);
             }
             case GenomicFileFormat.ValisDna: {
                 let model: SequenceTrackModel = {
@@ -178,7 +179,7 @@ export class GenomeVisualizer {
                     name: trackName,
                     path: path,
                 };
-                return this.addTrack(model, animateIn, highlightLocation);
+                return this.addTrack(model, animateIn, highlightLocation, highlightLocation2);
             }
             case GenomicFileFormat.ValisVariants: {
                 let model: VariantTrackModel = {
@@ -186,7 +187,7 @@ export class GenomeVisualizer {
                     name: trackName,
                     path: path,
                 };
-                return this.addTrack(model, animateIn, highlightLocation);
+                return this.addTrack(model, animateIn, highlightLocation, highlightLocation2);
             }
             /*
             case 'bam': { break; }

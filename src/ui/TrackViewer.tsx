@@ -83,6 +83,7 @@ export class TrackViewer extends Object2D {
     protected trackStyleProxies: { [trackType: string]: StyleProxy } = {};
 
     protected highlightLocation: string;
+    protected highlightLocation2?: string;
 
     constructor() {
         super();
@@ -210,7 +211,7 @@ export class TrackViewer extends Object2D {
         // create rows
         if (state.tracks != null) {
             for (let track of state.tracks) {
-                this.addTrack(track, false, state.highlightLocation);
+                this.addTrack(track, false, state.highlightLocation, state.highlightLocation2);
             }
         }
 
@@ -268,10 +269,11 @@ export class TrackViewer extends Object2D {
     }
 
     // track-viewer state deltas
-    addTrack(model: TrackModel, animate: boolean = true, highlightLocation: string): Track {
+    addTrack(model: TrackModel, animate: boolean = true, highlightLocation: string, highlightLocation2?: string): Track {
         let trackClasses = GenomeVisualizer.getTrackType(model.type);
 
         model.highlightLocation = highlightLocation;
+        model.highlightLocation2 = highlightLocation2;
 
         trackClasses.tileLoaderClass.getAvailableContigs(model).then(contigs => {
             for(let contig of contigs) this.dataSource.addContig(contig);
@@ -451,7 +453,7 @@ export class TrackViewer extends Object2D {
         }
     }
 
-    addPanel(location: GenomicLocation, animate: boolean = true, highlightLocation?: string) {
+    addPanel(location: GenomicLocation, animate: boolean = true, highlightLocation?: string, highlightLocation2?: string) {
         let edges = this.panelEdges;
         let newColumnIndex = Math.max(edges.length - 1, 0);
 

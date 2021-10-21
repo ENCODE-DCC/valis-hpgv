@@ -17,6 +17,7 @@ export declare class SignalTrack<Model extends TrackModel = SignalTrackModel> ex
     protected signalReading: Text;
     protected yAxisPointer: AxisPointer;
     protected highlightPointer: HighlightPointer;
+    protected highlightPointer2: HighlightPointer;
     readonly signalReadingSnapX: boolean;
     protected showSignalReading: boolean;
     protected _displayScale: number;

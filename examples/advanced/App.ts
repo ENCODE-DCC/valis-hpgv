@@ -4,6 +4,7 @@ const GV = require('../../dist/valis-hpgv.js');
 let config = {
     allowNewPanels: true,
     highlightLocation: 'chr1:54877700',
+    highlightLocation2: 'chr1:55877700',
     reorderTracks: true,
     tracks: [
         {

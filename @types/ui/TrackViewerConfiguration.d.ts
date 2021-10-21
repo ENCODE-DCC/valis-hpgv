@@ -27,5 +27,6 @@ export interface TrackViewerConfiguration {
     */
     reorderTracks?: boolean;
     highlightLocation?: string;
+    highlightLocation2?: string;
 }
 export default TrackViewerConfiguration;

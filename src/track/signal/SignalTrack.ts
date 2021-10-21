@@ -34,6 +34,7 @@ export class SignalTrack<Model extends TrackModel = SignalTrackModel> extends Sh
     protected signalReading: Text;
     protected yAxisPointer: AxisPointer;
     protected highlightPointer: HighlightPointer;
+    protected highlightPointer2: HighlightPointer;
 
     readonly signalReadingSnapX = true;
     protected showSignalReading = true;
@@ -104,6 +105,13 @@ export class SignalTrack<Model extends TrackModel = SignalTrackModel> extends Sh
         this.highlightPointer.mask = this;
         this.add(this.highlightPointer);
         
+        this.highlightPointer2 = new HighlightPointer(HighlightStyle.Secondary, [0.2, 0.2, 0.2, 0], [0.2, 0.2, 0.2, 0], 'x');
+        this.highlightPointer2.render = true;
+        this.highlightPointer2.x = 0.75;
+        this.highlightPointer2.y = 0;
+        this.highlightPointer2.z = 2.75;
+        this.highlightPointer2.mask = this;
+        this.add(this.highlightPointer2);
 
         if (model.color != null) {
             this.sharedState.signalColor = model.color;
@@ -144,6 +152,10 @@ export class SignalTrack<Model extends TrackModel = SignalTrackModel> extends Sh
         this.highlightPointer.activeColor = [0.2, 0.2, 0.2, 0.5];
         this.highlightPointer.secondaryColor = [0.2, 0.2, 0.2, 0.5];
         this.highlightPointer.setStyle(this.highlightPointer.style);
+
+        this.highlightPointer2.activeColor = [0.2, 0.2, 0.2, 0.5];
+        this.highlightPointer2.secondaryColor = [0.2, 0.2, 0.2, 0.5];
+        this.highlightPointer2.setStyle(this.highlightPointer.style);
     }
 
     setAxisPointer(id: string, fractionX: number, style: AxisPointerStyle) {
@@ -310,6 +322,10 @@ export class SignalTrack<Model extends TrackModel = SignalTrackModel> extends Sh
         this.highlightPointer.render = true;
         this.highlightPointer.transparent = false;
         this.highlightPointer.relativeX = value;
+
+        this.highlightPointer2.render = true;
+        this.highlightPointer2.transparent = false;
+        this.highlightPointer2.relativeX = value;
     }
 
     protected setSignalReading(value: number | null) {
