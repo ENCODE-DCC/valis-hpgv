@@ -13,6 +13,7 @@ export type TrackModel = {
     expandedHeightPx?: number,
     
     highlightLocation?: string,
+    highlightLocation2?: string,
 
     fileFormatType?: string,
     
