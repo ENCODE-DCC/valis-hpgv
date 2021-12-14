@@ -174,6 +174,9 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 return;
             }
 
+            //VALIS-8: prevent collision between annotation names
+            let createdAnnotationNames = new Array<{y: number, relativeX: number, relativeW: number}>();
+
             for (let gene of tile.payload) {
                 // @! temp performance hack, only use node when visible
                 // (don't need to do this when using instancing)
@@ -237,6 +240,29 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.name.opacity = namesOpacity;
                 annotation.name.x = 5
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
+
+                //VALIS-8: prevent collision between annotation texts
+                let annotationNameWidth = annotation.name.getComputedWidth()
+                if (annotationNameWidth) {
+                    for (let name of createdAnnotationNames) {
+                        if (name.y == annotation.name.y) {
+                            if (name.relativeX <= annotation.name.relativeX &&
+                                annotation.name.relativeX < name.relativeX + name.relativeW) {
+                                annotation.name.relativeX = name.relativeX + name.relativeW;
+                            }
+                        }
+                    }
+                    let trackWidth = this.getComputedWidth();
+                    const spacingFactor = 0.1
+                    createdAnnotationNames.push({
+                        y: annotation.name.y,
+                        relativeX: annotation.name.relativeX,
+                        relativeW: annotationNameWidth/trackWidth*(1.0 + spacingFactor)
+                    });
+                }
+                else {
+                    annotation.name.visible = false
+                }
 
                 // add to the scene graph (auto removed when unused)
                 this._onStageAnnotations.get(annotationKey, () => {
