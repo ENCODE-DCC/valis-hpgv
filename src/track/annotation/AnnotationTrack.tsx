@@ -158,6 +158,9 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
 
         let microSamplingDensity = 1;
 
+        //VALIS-8: prevent collision between annotation names
+        let createdAnnotationNames = new Array<{geneName: string, y: number, relativeX: number, relativeW: number}>();
+
         this.getTileLoader().forEachTile(x0, x1, microSamplingDensity, true, (tile) => {
             // debug: draw red lines at tile boundaries
             if (this.debugOptions.showTileBoundaries) {
@@ -174,9 +177,6 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
             if (tile.state !== TileState.Complete) {
                 return;
             }
-
-            //VALIS-8: prevent collision between annotation names
-            let createdAnnotationNames = new Array<{y: number, relativeX: number, relativeW: number}>();
 
             for (let gene of tile.payload) {
                 // @! temp performance hack, only use node when visible
@@ -242,27 +242,32 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.name.x = 5
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
 
-                //VALIS-8: prevent collision between annotation texts
-                let annotationNameWidth = annotation.name.getComputedWidth()
-                if (annotationNameWidth) {
+                //VALIS-8: prevent collision between annotation names
+                let annotationNameWidth = annotation.name.getComputedWidth();
+                if (annotation.name.visible && annotationNameWidth) {
                     for (let name of createdAnnotationNames) {
-                        if (name.y == annotation.name.y) {
-                            if (name.relativeX <= annotation.name.relativeX &&
+                        if (annotation.name.y == name.y && gene.name != name.geneName) {
+                            // check gene's name to prevent multiple collision checking
+                            // on the same gene that is rendered multiple times in different tile.payload
+                            if (annotation.name.relativeX >= name.relativeX &&
                                 annotation.name.relativeX < name.relativeX + name.relativeW) {
                                 annotation.name.relativeX = name.relativeX + name.relativeW;
                             }
                         }
                     }
                     let trackWidth = this.getComputedWidth();
-                    const spacingFactor = 0.1
+                    const spacingFactor = 0.1;
+                    // 10% (based on left name's width) spacing between two overlapping annotation names
                     createdAnnotationNames.push({
+                        geneName: gene.name,
                         y: annotation.name.y,
                         relativeX: annotation.name.relativeX,
                         relativeW: annotationNameWidth/trackWidth*(1.0 + spacingFactor)
                     });
                 }
                 else {
-                    annotation.name.visible = false
+                    // hide names with zero width
+                    annotation.name.visible = false;
                 }
 
                 // add to the scene graph (auto removed when unused)
