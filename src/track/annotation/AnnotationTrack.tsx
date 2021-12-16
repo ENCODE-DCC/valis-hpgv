@@ -248,8 +248,10 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 if (annotation.name.visible && annotationNameWidth) {
                     for (let name of createdAnnotationNames) {
                         if (annotation.name.y == name.y && gene.name != name.geneName) {
-                            // check gene's name to prevent multiple collision checking
-                            // on the same gene that is rendered multiple times in different tile.payload
+                            // check gene's name to prevent multiple collision checking on the same gene
+                            // this is because if we shift gene's name to the right and if it crosses
+                            // the boundary of the current tile block then the gene is queued to the
+                            // next tile block and then revisited in the next tile loop
                             if (annotation.name.relativeX >= name.relativeX &&
                                 annotation.name.relativeX < name.relativeX + name.relativeW) {
                                 annotation.name.relativeX = name.relativeX + name.relativeW;
