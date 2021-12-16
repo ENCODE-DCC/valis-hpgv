@@ -238,7 +238,8 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.gene.opacity = opacity;
 
                 annotation.name.visible = namesOpacity > 0;
-                annotation.name.opacity = namesOpacity;
+                // VALIS-8: no blending for gene name
+                annotation.name.opacity = Math.max(namesOpacity, 1.0);
                 annotation.name.x = 5
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
 
