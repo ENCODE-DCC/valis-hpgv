@@ -158,8 +158,8 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
 
         let microSamplingDensity = 1;
 
-        //VALIS-8: prevent collision between annotation names
-        let createdAnnotationNames = new Array<{geneName: string, y: number, relativeX: number, relativeW: number}>();
+        // VALIS-8: prevent collision between annotation names
+        const createdAnnotationNames = new Array<{geneName: string, y: number, relativeX: number, relativeW: number}>();
 
         this.getTileLoader().forEachTile(x0, x1, microSamplingDensity, true, (tile) => {
             // debug: draw red lines at tile boundaries
@@ -242,8 +242,8 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.name.x = 5
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
 
-                //VALIS-8: prevent collision between annotation names
-                let annotationNameWidth = annotation.name.getComputedWidth();
+                // VALIS-8: prevent collision between annotation names
+                const annotationNameWidth = annotation.name.getComputedWidth();
                 if (annotation.name.visible && annotationNameWidth) {
                     for (let name of createdAnnotationNames) {
                         if (annotation.name.y == name.y && gene.name != name.geneName) {
@@ -255,14 +255,14 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                             }
                         }
                     }
-                    let trackWidth = this.getComputedWidth();
+                    const trackWidth = this.getComputedWidth();
                     const spacingFactor = 0.1;
                     // 10% (based on left name's width) spacing between two overlapping annotation names
                     createdAnnotationNames.push({
                         geneName: gene.name,
                         y: annotation.name.y,
                         relativeX: annotation.name.relativeX,
-                        relativeW: annotationNameWidth/trackWidth*(1.0 + spacingFactor)
+                        relativeW: annotationNameWidth / trackWidth * (1.0 + spacingFactor)
                     });
                 }
                 else {
