@@ -180,6 +180,7 @@ export class Panel extends Object2D {
         trackView.setContig(this.contig);
         trackView.setRange(this.x0, this.x1);
         trackView.setHighlightPointer('0', 0.5);
+        trackView.setHighlightPointer('1', 0.5);
 
         this.fillX(trackView);
         this.add(trackView);
@@ -266,6 +267,7 @@ export class Panel extends Object2D {
         // re-center highlight on location update
         for (let trackView of this.trackViews) {
             trackView.setHighlightPointer('0', 0.5);
+            trackView.setHighlightPointer('1', 0.5);
         }
     }
 
@@ -317,6 +319,7 @@ export class Panel extends Object2D {
             for (let trackView of this.trackViews) {
                 trackView.setAxisPointer(pointerId, fractionX, AxisPointerStyle.Secondary);
                 trackView.setHighlightPointer('0', fractionX);
+                trackView.setHighlightPointer('1', fractionX);
             }
         }
     }
@@ -653,6 +656,7 @@ export class Panel extends Object2D {
                 tile.setAxisPointer(e.pointerId.toString(), fractionX, AxisPointerStyle.Active);
             }
             tile.setHighlightPointer('0', fractionX);
+            tile.setHighlightPointer('1', fractionX);
         }
 
         // broadcast active axis pointer change
@@ -754,6 +758,7 @@ export class Panel extends Object2D {
         let contigString = rangeSpecifier.split(':')[0];
         for (let tile of this.trackViews) {
             tile.setHighlightPointer('0', 0.5, contigString);
+            tile.setHighlightPointer('1', 0.5, contigString);
         }
     }
 

@@ -40,11 +40,12 @@ export declare class TrackViewer extends Object2D {
         [trackType: string]: StyleProxy;
     };
     protected highlightLocation: string;
+    protected highlightLocation2: string;
     constructor();
     setConfiguration(state: TrackViewerConfiguration): void;
     getConfiguration(): TrackViewerConfiguration;
     setDataSource(dataSource: InternalDataSource): void;
-    addTrack(model: TrackModel, animate: boolean, highlightLocation: string): Track;
+    addTrack(model: TrackModel, animate: boolean, highlightLocation: string, id?: string): Track;
     closeTrack(track: Track, animate?: boolean, onComplete?: () => void): void;
     setTrackIndex(track: Track, indexParam: number, animate?: boolean): void;
     moveTrackUp(track: Track, animate?: boolean): void;

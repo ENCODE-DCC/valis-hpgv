@@ -32,12 +32,14 @@ export class TrackObject<
     
     protected defaultCursor = 'crosshair';
     protected highlightLocation: string;
+    protected highlightLocation2: string;
 
     protected axisPointers: { [id: string]: AxisPointer } = {};
     protected activeAxisPointerColor = [1, 1, 1, 0.8];
     protected secondaryAxisPointerColor = [0.2, 0.2, 0.2, 1];
     
     protected highlightPointers: { [id: string]: HighlightPointer } = {};
+    protected highlightPointers2: { [id: string]: HighlightPointer } = {};
 
     protected focusRegionRectLeft: Rect;
     protected focusRegionRectRight: Rect;
@@ -54,6 +56,7 @@ export class TrackObject<
         this.color = [0.1, 0.1, 0.1, 1];
         
         this.highlightLocation = model["highlightLocation"];
+        this.highlightLocation2 = model["highlightLocation2"];
 
         this.cursorStyle = this.defaultCursor;
     
@@ -134,7 +137,7 @@ export class TrackObject<
     setHighlightPointer(id: string, fractionX: number, contig?: string) {
         let withinBounds = fractionX >= 0 && fractionX <= 1;
     
-        let highlightPointer = this.highlightPointers[id];
+        let highlightPointer =  id === '1' ? this.highlightPointers2[id] : this.highlightPointers[id];
     
         if (highlightPointer === undefined) {
             // !withinBounds means do not draw, so we don't need to create the object
@@ -143,7 +146,12 @@ export class TrackObject<
             highlightPointer = new HighlightPointer(null, [0.2, 0.2, 0.2, 0.5], [0.2, 0.2, 0.2, 0.5], 'x');
             highlightPointer.z = 2;
             this.add(highlightPointer);
-            this.highlightPointers[id] = highlightPointer;
+
+            if (id === '1') {
+                this.highlightPointers2[id] = highlightPointer;
+            } else {
+                this.highlightPointers[id] = highlightPointer;
+            }
         }
         highlightPointer.color = [0.957, 0.886, 0.478, 1]; // hex: 
     
@@ -152,17 +160,35 @@ export class TrackObject<
         if (!(this.highlightLocation)) {
             highlightPointer.render = false;
         }
+
+        if (!(this.highlightLocation2)) {
+            highlightPointer.render = false;
+        }
     
-        if (withinBounds && this.highlightLocation) {
-            const highlightChr = this.highlightLocation.split(':')[0];
-            const contigPosition = contig ? contig : this.contig;
-            let highlightPosition;
-            if (highlightChr !== contigPosition) {
-                highlightPosition = NaN;
-            } else {
-                highlightPosition = +this.highlightLocation.split(':')[1];
+        if (id === '1') {
+            if (withinBounds && this.highlightLocation2) {
+                const highlightChr = this.highlightLocation2.split(':')[0];
+                const contigPosition = contig ? contig : this.contig;
+                let highlightPosition;
+                if (highlightChr !== contigPosition) {
+                    highlightPosition = NaN;
+                } else {
+                    highlightPosition = +this.highlightLocation.split(':')[1];
+                }
+                highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
             }
-            highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
+        } else {
+            if (withinBounds && this.highlightLocation) {
+                const highlightChr = this.highlightLocation.split(':')[0];
+                const contigPosition = contig ? contig : this.contig;
+                let highlightPosition;
+                if (highlightChr !== contigPosition) {
+                    highlightPosition = NaN;
+                } else {
+                    highlightPosition = +this.highlightLocation.split(':')[1];
+                }
+                highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
+            }
         }
     }
 

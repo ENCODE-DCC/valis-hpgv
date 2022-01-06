@@ -75587,6 +75587,7 @@ var TrackObject = /** @class */ (function (_super) {
         _this.activeAxisPointerColor = [1, 1, 1, 0.8];
         _this.secondaryAxisPointerColor = [0.2, 0.2, 0.2, 1];
         _this.highlightPointers = {};
+        _this.highlightPointers2 = {};
         _this.displayNeedUpdate = true;
         _this.loadingIndicatorPadding = 0.1;
         _this._loadingTiles = new UsageCache_1.default(null, function (tile) { return _this.removeTileLoadingDependency(tile); });
@@ -75609,6 +75610,7 @@ var TrackObject = /** @class */ (function (_super) {
         // set default background color
         _this.color = [0.1, 0.1, 0.1, 1];
         _this.highlightLocation = model["highlightLocation"];
+        _this.highlightLocation2 = model["highlightLocation2"];
         _this.cursorStyle = _this.defaultCursor;
         _this.addInteractionListener('pointerdown', function () { return _this.cursorStyle = 'pointer'; });
         _this.addInteractionListener('pointerup', function () { return _this.cursorStyle = _this.defaultCursor; });
@@ -75684,7 +75686,7 @@ var TrackObject = /** @class */ (function (_super) {
     };
     TrackObject.prototype.setHighlightPointer = function (id, fractionX, contig) {
         var withinBounds = fractionX >= 0 && fractionX <= 1;
-        var highlightPointer = this.highlightPointers[id];
+        var highlightPointer = id === '1' ? this.highlightPointers2[id] : this.highlightPointers[id];
         if (highlightPointer === undefined) {
             // !withinBounds means do not draw, so we don't need to create the object
             if (!withinBounds)
@@ -75693,24 +75695,48 @@ var TrackObject = /** @class */ (function (_super) {
             highlightPointer = new HighlightPointer(null, [0.2, 0.2, 0.2, 0.5], [0.2, 0.2, 0.2, 0.5], 'x');
             highlightPointer.z = 2;
             this.add(highlightPointer);
-            this.highlightPointers[id] = highlightPointer;
+            if (id === '1') {
+                this.highlightPointers2[id] = highlightPointer;
+            }
+            else {
+                this.highlightPointers[id] = highlightPointer;
+            }
         }
         highlightPointer.color = [0.957, 0.886, 0.478, 1]; // hex: 
         highlightPointer.render = withinBounds;
         if (!(this.highlightLocation)) {
             highlightPointer.render = false;
         }
-        if (withinBounds && this.highlightLocation) {
-            var highlightChr = this.highlightLocation.split(':')[0];
-            var contigPosition = contig ? contig : this.contig;
-            var highlightPosition = void 0;
-            if (highlightChr !== contigPosition) {
-                highlightPosition = NaN;
+        if (!(this.highlightLocation2)) {
+            highlightPointer.render = false;
+        }
+        if (id === '1') {
+            if (withinBounds && this.highlightLocation2) {
+                var highlightChr = this.highlightLocation2.split(':')[0];
+                var contigPosition = contig ? contig : this.contig;
+                var highlightPosition = void 0;
+                if (highlightChr !== contigPosition) {
+                    highlightPosition = NaN;
+                }
+                else {
+                    highlightPosition = +this.highlightLocation.split(':')[1];
+                }
+                highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
             }
-            else {
-                highlightPosition = +this.highlightLocation.split(':')[1];
+        }
+        else {
+            if (withinBounds && this.highlightLocation) {
+                var highlightChr = this.highlightLocation.split(':')[0];
+                var contigPosition = contig ? contig : this.contig;
+                var highlightPosition = void 0;
+                if (highlightChr !== contigPosition) {
+                    highlightPosition = NaN;
+                }
+                else {
+                    highlightPosition = +this.highlightLocation.split(':')[1];
+                }
+                highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
             }
-            highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
         }
     };
     TrackObject.prototype.removeAxisPointer = function (id) {
@@ -78933,6 +78959,13 @@ var SignalTrack = /** @class */ (function (_super) {
         _this.highlightPointer.z = 2;
         _this.highlightPointer.mask = _this;
         _this.add(_this.highlightPointer);
+        _this.highlightPointer2 = new TrackObject_1.HighlightPointer(TrackObject_1.HighlightStyle.Secondary, [0.2, 0.2, 0.2, 0], [0.2, 0.2, 0.2, 0], 'x');
+        _this.highlightPointer2.render = true;
+        _this.highlightPointer2.x = 1.5;
+        _this.highlightPointer2.y = 0;
+        _this.highlightPointer2.z = 3;
+        _this.highlightPointer2.mask = _this;
+        _this.add(_this.highlightPointer2);
         if (model.color != null) {
             _this.sharedState.signalColor = model.color;
         }
@@ -78975,6 +79008,9 @@ var SignalTrack = /** @class */ (function (_super) {
         this.highlightPointer.activeColor = [0.2, 0.2, 0.2, 0.5];
         this.highlightPointer.secondaryColor = [0.2, 0.2, 0.2, 0.5];
         this.highlightPointer.setStyle(this.highlightPointer.style);
+        this.highlightPointer2.activeColor = [0.2, 0.2, 0.2, 0.5];
+        this.highlightPointer2.secondaryColor = [0.2, 0.2, 0.2, 0.5];
+        this.highlightPointer2.setStyle(this.highlightPointer2.style);
     };
     SignalTrack.prototype.setAxisPointer = function (id, fractionX, style) {
         _super.prototype.setAxisPointer.call(this, id, fractionX, style);
@@ -79129,6 +79165,9 @@ var SignalTrack = /** @class */ (function (_super) {
         this.highlightPointer.render = true;
         this.highlightPointer.transparent = false;
         this.highlightPointer.relativeX = value;
+        this.highlightPointer2.render = true;
+        this.highlightPointer2.transparent = false;
+        this.highlightPointer2.relativeX = value;
     };
     SignalTrack.prototype.setSignalReading = function (value) {
         if (value === null) {
@@ -80566,6 +80605,7 @@ var Panel = /** @class */ (function (_super) {
         trackView.setContig(this.contig);
         trackView.setRange(this.x0, this.x1);
         trackView.setHighlightPointer('0', 0.5);
+        trackView.setHighlightPointer('1', 0.5);
         this.fillX(trackView);
         this.add(trackView);
         this.trackViews.add(trackView);
@@ -80659,6 +80699,7 @@ var Panel = /** @class */ (function (_super) {
             for (var _b = __values(this.trackViews), _c = _b.next(); !_c.done; _c = _b.next()) {
                 var trackView = _c.value;
                 trackView.setHighlightPointer('0', 0.5);
+                trackView.setHighlightPointer('1', 0.5);
             }
         }
         catch (e_7_1) { e_7 = { error: e_7_1 }; }
@@ -80725,6 +80766,7 @@ var Panel = /** @class */ (function (_super) {
                     var trackView = _f.value;
                     trackView.setAxisPointer(pointerId, fractionX, TrackObject_1.AxisPointerStyle.Secondary);
                     trackView.setHighlightPointer('0', fractionX);
+                    trackView.setHighlightPointer('1', fractionX);
                 }
             }
             catch (e_9_1) { e_9 = { error: e_9_1 }; }
@@ -80796,6 +80838,7 @@ var Panel = /** @class */ (function (_super) {
                     tile.setAxisPointer(e.pointerId.toString(), fractionX, TrackObject_1.AxisPointerStyle.Active);
                 }
                 tile.setHighlightPointer('0', fractionX);
+                tile.setHighlightPointer('1', fractionX);
             }
         }
         catch (e_11_1) { e_11 = { error: e_11_1 }; }
@@ -80882,6 +80925,7 @@ var Panel = /** @class */ (function (_super) {
             for (var _b = __values(this.trackViews), _c = _b.next(); !_c.done; _c = _b.next()) {
                 var tile = _c.value;
                 tile.setHighlightPointer('0', 0.5, contigString);
+                tile.setHighlightPointer('1', 0.5, contigString);
             }
         }
         catch (e_13_1) { e_13 = { error: e_13_1 }; }
@@ -81422,6 +81466,7 @@ var TrackViewer = /** @class */ (function (_super) {
                 for (var _e = __values(state.tracks), _f = _e.next(); !_f.done; _f = _e.next()) {
                     var track = _f.value;
                     this.addTrack(track, false, state.highlightLocation);
+                    this.addTrack(track, false, state.highlightLocation2, '1');
                 }
             }
             catch (e_9_1) { e_9 = { error: e_9_1 }; }
@@ -81517,12 +81562,17 @@ var TrackViewer = /** @class */ (function (_super) {
         }
     };
     // track-viewer state deltas
-    TrackViewer.prototype.addTrack = function (model, animate, highlightLocation) {
+    TrackViewer.prototype.addTrack = function (model, animate, highlightLocation, id) {
         var _this = this;
         if (animate === void 0) { animate = true; }
         var e_14, _a;
         var trackClasses = GenomeVisualizer_1.default.getTrackType(model.type);
-        model.highlightLocation = highlightLocation;
+        if (id === '1') {
+            model.highlightLocation2 = highlightLocation;
+        }
+        else {
+            model.highlightLocation = highlightLocation;
+        }
         trackClasses.tileLoaderClass.getAvailableContigs(model).then(function (contigs) {
             var e_15, _a;
             try {

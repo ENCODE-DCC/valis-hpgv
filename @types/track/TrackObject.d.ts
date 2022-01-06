@@ -17,12 +17,16 @@ export declare class TrackObject<ModelType extends TrackModel = TrackModel, Tile
     protected x1: number;
     protected defaultCursor: string;
     protected highlightLocation: string;
+    protected highlightLocation2: string;
     protected axisPointers: {
         [id: string]: AxisPointer;
     };
     protected activeAxisPointerColor: number[];
     protected secondaryAxisPointerColor: number[];
     protected highlightPointers: {
+        [id: string]: HighlightPointer;
+    };
+    protected highlightPointers2: {
         [id: string]: HighlightPointer;
     };
     protected focusRegionRectLeft: Rect;

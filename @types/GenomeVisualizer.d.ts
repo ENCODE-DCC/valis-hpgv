@@ -15,6 +15,7 @@ export interface GenomeVisualizerRenderProps {
     pixelRatio?: number;
     style?: React.CSSProperties;
     highlightLocation?: string;
+    highlightLocation2?: string;
 }
 interface CustomTileLoader<ModelType> {
     new (dataSource: IDataSource, model: ModelType, contig: string, ...args: Array<any>): TileLoader<any, any>;
