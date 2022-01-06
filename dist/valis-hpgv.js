@@ -76672,7 +76672,8 @@ var AnnotationTrack = /** @class */ (function (_super) {
         _this.macroLodBlendRange = 2;
         _this.macroLodThresholdLow = 7;
         _this.macroLodThresholdHigh = _this.macroLodThresholdLow + _this.macroLodBlendRange;
-        _this.namesLodBlendRange = 1;
+        //VALIS-8: increased 1->4 to show annotatation names at higher (zoomed out) LoD level
+        _this.namesLodBlendRange = 4;
         _this.namesLodThresholdLow = 6;
         _this.namesLodThresholdHigh = _this.namesLodThresholdLow + _this.namesLodBlendRange;
         _this.annotationY = (_a = {},
@@ -76788,6 +76789,8 @@ var AnnotationTrack = /** @class */ (function (_super) {
             namesOpacity = 0;
         }
         var microSamplingDensity = 1;
+        // VALIS-8: prevent collision between annotation names
+        var createdAnnotationNames = new Array();
         this.getTileLoader().forEachTile(x0, x1, microSamplingDensity, true, function (tile) {
             var e_1, _a;
             // debug: draw red lines at tile boundaries
@@ -76805,6 +76808,7 @@ var AnnotationTrack = /** @class */ (function (_super) {
                 return;
             }
             var _loop_1 = function (gene) {
+                var e_2, _a;
                 // @! temp performance hack, only use node when visible
                 // (don't need to do this when using instancing)
                 {
@@ -76858,9 +76862,49 @@ var AnnotationTrack = /** @class */ (function (_super) {
                 annotation.gene.relativeX = (gene.startIndex - x0) / span;
                 annotation.gene.opacity = opacity;
                 annotation.name.visible = namesOpacity > 0;
-                annotation.name.opacity = namesOpacity;
+                // VALIS-8: no blending for gene name
+                annotation.name.opacity = Math.max(namesOpacity, 1.0);
                 annotation.name.x = 5;
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
+                // VALIS-8: prevent collision between annotation names
+                var annotationNameWidth = annotation.name.getComputedWidth();
+                if (annotation.name.visible && annotationNameWidth) {
+                    try {
+                        for (var createdAnnotationNames_1 = __values(createdAnnotationNames), createdAnnotationNames_1_1 = createdAnnotationNames_1.next(); !createdAnnotationNames_1_1.done; createdAnnotationNames_1_1 = createdAnnotationNames_1.next()) {
+                            var name_1 = createdAnnotationNames_1_1.value;
+                            if (annotation.name.y == name_1.y && gene.name != name_1.geneName) {
+                                // check gene's name to prevent multiple collision checking on the same gene
+                                // this is because if we shift gene's name to the right and if it crosses
+                                // the boundary of the current tile block then the gene is queued to the
+                                // next tile block and then revisited in the next tile loop
+                                if (annotation.name.relativeX >= name_1.relativeX &&
+                                    annotation.name.relativeX < name_1.relativeX + name_1.relativeW) {
+                                    annotation.name.relativeX = name_1.relativeX + name_1.relativeW;
+                                }
+                            }
+                        }
+                    }
+                    catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                    finally {
+                        try {
+                            if (createdAnnotationNames_1_1 && !createdAnnotationNames_1_1.done && (_a = createdAnnotationNames_1.return)) _a.call(createdAnnotationNames_1);
+                        }
+                        finally { if (e_2) throw e_2.error; }
+                    }
+                    var trackWidth = _this.getComputedWidth();
+                    var spacingFactor = 0.1;
+                    // 10% (based on left name's width) spacing between two overlapping annotation names
+                    createdAnnotationNames.push({
+                        geneName: gene.name,
+                        y: annotation.name.y,
+                        relativeX: annotation.name.relativeX,
+                        relativeW: annotationNameWidth / trackWidth * (1.0 + spacingFactor)
+                    });
+                }
+                else {
+                    // hide names with zero width
+                    annotation.name.visible = false;
+                }
                 // add to the scene graph (auto removed when unused)
                 _this._onStageAnnotations.get(annotationKey, function () {
                     _this.add(annotation.gene);
@@ -76942,7 +76986,7 @@ var AnnotationTrack = /** @class */ (function (_super) {
             }
             // Instance Rendering
             var tileObject = _this._macroTileCache.get(_this.contig + ':' + tile.key, function () {
-                var e_2, _a;
+                var e_3, _a;
                 // initialize macro gene instances
                 // create array of gene annotation data
                 var instanceData = new Array();
@@ -76991,12 +77035,12 @@ var AnnotationTrack = /** @class */ (function (_super) {
                         }
                     }
                 }
-                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                catch (e_3_1) { e_3 = { error: e_3_1 }; }
                 finally {
                     try {
                         if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                     }
-                    finally { if (e_2) throw e_2.error; }
+                    finally { if (e_3) throw e_3.error; }
                 }
                 var geneInstances = new IntervalInstances_1.default(instanceData);
                 geneInstances.y = 0;
@@ -77074,7 +77118,7 @@ var GeneAnnotation = /** @class */ (function (_super) {
             return this._opacity;
         },
         set: function (v) {
-            var e_3, _a;
+            var e_4, _a;
             this._opacity = v;
             try {
                 for (var _b = __values(this.children), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -77082,12 +77126,12 @@ var GeneAnnotation = /** @class */ (function (_super) {
                     child.opacity = v;
                 }
             }
-            catch (e_3_1) { e_3 = { error: e_3_1 }; }
+            catch (e_4_1) { e_4 = { error: e_4_1 }; }
             finally {
                 try {
                     if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
-                finally { if (e_3) throw e_3.error; }
+                finally { if (e_4) throw e_4.error; }
             }
         },
         enumerable: true,
@@ -77098,7 +77142,7 @@ var GeneAnnotation = /** @class */ (function (_super) {
 var TranscriptAnnotation = /** @class */ (function (_super) {
     __extends(TranscriptAnnotation, _super);
     function TranscriptAnnotation(sharedState, transcript, strand, onAnnotationClicked) {
-        var e_4, _a, e_5, _b;
+        var e_5, _a, e_6, _b;
         var _this = _super.call(this) || this;
         _this.transcript = transcript;
         _this._opacity = 1;
@@ -77161,12 +77205,12 @@ var TranscriptAnnotation = /** @class */ (function (_super) {
                 _this.add(exon);
             }
         }
-        catch (e_4_1) { e_4 = { error: e_4_1 }; }
+        catch (e_5_1) { e_5 = { error: e_5_1 }; }
         finally {
             try {
                 if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
             }
-            finally { if (e_4) throw e_4.error; }
+            finally { if (e_5) throw e_5.error; }
         }
         try {
             // create untranslated regions
@@ -77180,12 +77224,12 @@ var TranscriptAnnotation = /** @class */ (function (_super) {
                 _this.add(utr);
             }
         }
-        catch (e_5_1) { e_5 = { error: e_5_1 }; }
+        catch (e_6_1) { e_6 = { error: e_6_1 }; }
         finally {
             try {
                 if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
             }
-            finally { if (e_5) throw e_5.error; }
+            finally { if (e_6) throw e_6.error; }
         }
         // create protein coding sequences
         // ! assuming CDS array is sorted from startIndex
@@ -77210,7 +77254,7 @@ var TranscriptAnnotation = /** @class */ (function (_super) {
             return this._opacity;
         },
         set: function (v) {
-            var e_6, _a;
+            var e_7, _a;
             this._opacity = v;
             try {
                 for (var _b = __values(this.children), _c = _b.next(); !_c.done; _c = _b.next()) {
@@ -77218,12 +77262,12 @@ var TranscriptAnnotation = /** @class */ (function (_super) {
                     child.opacity = v;
                 }
             }
-            catch (e_6_1) { e_6 = { error: e_6_1 }; }
+            catch (e_7_1) { e_7 = { error: e_7_1 }; }
             finally {
                 try {
                     if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
                 }
-                finally { if (e_6) throw e_6.error; }
+                finally { if (e_7) throw e_7.error; }
             }
         },
         enumerable: true,
