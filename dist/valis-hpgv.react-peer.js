@@ -48593,11 +48593,11 @@ var AnnotationTrack = /** @class */ (function (_super) {
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
                 // VALIS-8: prevent collision between annotation names
                 var annotationNameWidth = annotation.name.getComputedWidth();
-                if (annotation.name.visible && annotationNameWidth) {
+                if (annotation.name.visible && annotationNameWidth !== 0) {
                     try {
                         for (var createdAnnotationNames_1 = __values(createdAnnotationNames), createdAnnotationNames_1_1 = createdAnnotationNames_1.next(); !createdAnnotationNames_1_1.done; createdAnnotationNames_1_1 = createdAnnotationNames_1.next()) {
                             var name_1 = createdAnnotationNames_1_1.value;
-                            if (annotation.name.y == name_1.y && gene.name != name_1.geneName) {
+                            if (annotation.name.y === name_1.y && gene.name !== name_1.geneName) {
                                 // check gene's name to prevent multiple collision checking on the same gene
                                 // this is because if we shift gene's name to the right and if it crosses
                                 // the boundary of the current tile block then the gene is queued to the
