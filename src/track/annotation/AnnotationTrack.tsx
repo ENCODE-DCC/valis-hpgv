@@ -245,9 +245,9 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
 
                 // VALIS-8: prevent collision between annotation names
                 const annotationNameWidth = annotation.name.getComputedWidth();
-                if (annotation.name.visible && annotationNameWidth) {
+                if (annotation.name.visible && annotationNameWidth !== 0) {
                     for (let name of createdAnnotationNames) {
-                        if (annotation.name.y == name.y && gene.name != name.geneName) {
+                        if (annotation.name.y === name.y && gene.name !== name.geneName) {
                             // check gene's name to prevent multiple collision checking on the same gene
                             // this is because if we shift gene's name to the right and if it crosses
                             // the boundary of the current tile block then the gene is queued to the
