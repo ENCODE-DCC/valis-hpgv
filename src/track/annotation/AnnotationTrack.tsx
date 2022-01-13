@@ -37,7 +37,7 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
     protected readonly macroLodThresholdLow = 7;
     protected readonly macroLodThresholdHigh = this.macroLodThresholdLow + this.macroLodBlendRange;
 
-    // VALIS-8: increased 1->4 to show annotatation names at higher (zoomed out) LoD level
+    // VALIS-8: increased 1->4 to show annotation names at higher (zoomed out) LoD level
     protected readonly namesLodBlendRange = 4;
     protected readonly namesLodThresholdLow = 6;
     protected readonly namesLodThresholdHigh = this.namesLodThresholdLow + this.namesLodBlendRange;
