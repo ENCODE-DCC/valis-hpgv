@@ -76672,7 +76672,7 @@ var AnnotationTrack = /** @class */ (function (_super) {
         _this.macroLodBlendRange = 2;
         _this.macroLodThresholdLow = 7;
         _this.macroLodThresholdHigh = _this.macroLodThresholdLow + _this.macroLodBlendRange;
-        //VALIS-8: increased 1->4 to show annotatation names at higher (zoomed out) LoD level
+        // VALIS-8: increased 1->4 to show annotatation names at higher (zoomed out) LoD level
         _this.namesLodBlendRange = 4;
         _this.namesLodThresholdLow = 6;
         _this.namesLodThresholdHigh = _this.namesLodThresholdLow + _this.namesLodBlendRange;
