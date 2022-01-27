@@ -228,7 +228,6 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                         name.relativeY = geneAnnotation.relativeY;
                         name.originY = -1;
                     }
-
                     return {gene: geneAnnotation, name: name};
                 });
 
@@ -244,8 +243,8 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
 
                 // VALIS-8: prevent collision between annotation names
-                const annotationNameWidth = annotation.name.getComputedWidth();
-                if (annotation.name.visible && annotationNameWidth !== 0) {
+                const annotationNameWidth = annotation.name.w;
+                if (annotation.name.visible) {
                     for (let name of createdAnnotationNames) {
                         if (annotation.name.y === name.y && gene.name !== name.geneName) {
                             // check gene's name to prevent multiple collision checking on the same gene
@@ -267,10 +266,6 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                         relativeX: annotation.name.relativeX,
                         relativeW: annotationNameWidth / trackWidth * (1.0 + spacingFactor)
                     });
-                }
-                else {
-                    // hide names with zero width
-                    annotation.name.visible = false;
                 }
 
                 // add to the scene graph (auto removed when unused)
