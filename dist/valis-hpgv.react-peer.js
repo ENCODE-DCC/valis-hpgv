@@ -48592,8 +48592,8 @@ var AnnotationTrack = /** @class */ (function (_super) {
                 annotation.name.x = 5;
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
                 // VALIS-8: prevent collision between annotation names
-                var annotationNameWidth = annotation.name.getComputedWidth();
-                if (annotation.name.visible && annotationNameWidth !== 0) {
+                var annotationNameWidth = annotation.name.w;
+                if (annotation.name.visible) {
                     try {
                         for (var createdAnnotationNames_1 = __values(createdAnnotationNames), createdAnnotationNames_1_1 = createdAnnotationNames_1.next(); !createdAnnotationNames_1_1.done; createdAnnotationNames_1_1 = createdAnnotationNames_1.next()) {
                             var name_1 = createdAnnotationNames_1_1.value;
@@ -48625,10 +48625,6 @@ var AnnotationTrack = /** @class */ (function (_super) {
                         relativeX: annotation.name.relativeX,
                         relativeW: annotationNameWidth / trackWidth * (1.0 + spacingFactor)
                     });
-                }
-                else {
-                    // hide names with zero width
-                    annotation.name.visible = false;
                 }
                 // add to the scene graph (auto removed when unused)
                 _this._onStageAnnotations.get(annotationKey, function () {
