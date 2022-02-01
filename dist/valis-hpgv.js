@@ -75703,14 +75703,19 @@ var TrackObject = /** @class */ (function (_super) {
         if (withinBounds && this.highlightLocation) {
             var highlightChr = this.highlightLocation.split(':')[0];
             var contigPosition = contig ? contig : this.contig;
-            var highlightPosition = void 0;
-            if (highlightChr !== contigPosition) {
-                highlightPosition = NaN;
+            if (highlightChr === contigPosition) {
+                var highlightStart = +this.highlightLocation.split(':')[1].split('-')[0];
+                var highlightEnd = +this.highlightLocation.split(':')[1].split('-')[1];
+                var highlightRelativeX = (highlightStart - this.x0 - 1.0) / (this.x1 - this.x0);
+                var highlightRelativeW = (highlightEnd - highlightStart + 0.95) / (this.x1 - this.x0);
+                var leftBoundaryRelativeX = -0.05;
+                if (highlightRelativeX < leftBoundaryRelativeX) {
+                    highlightRelativeW -= (leftBoundaryRelativeX - highlightRelativeX);
+                    highlightRelativeX = leftBoundaryRelativeX;
+                }
+                highlightPointer.relativeX = highlightRelativeX;
+                highlightPointer.relativeW = Math.max(0.0, highlightRelativeW);
             }
-            else {
-                highlightPosition = +this.highlightLocation.split(':')[1];
-            }
-            highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
         }
     };
     TrackObject.prototype.removeAxisPointer = function (id) {
@@ -75877,11 +75882,11 @@ var HighlightPointer = /** @class */ (function (_super) {
         var _this = _super.call(this, 0, 0) || this;
         _this.activeColor = activeColor;
         _this.secondaryColor = secondaryColor;
-        _this.originX = -0.5;
         _this.relativeH = 1;
         // this is the width, in pixels, of the highlight region
         _this.w = 3;
         _this.transparent = true;
+        _this.opacity = 0.6;
         _this.setStyle(style);
         return _this;
     }
