@@ -156,13 +156,19 @@ export class TrackObject<
         if (withinBounds && this.highlightLocation) {
             const highlightChr = this.highlightLocation.split(':')[0];
             const contigPosition = contig ? contig : this.contig;
-            let highlightPosition;
-            if (highlightChr !== contigPosition) {
-                highlightPosition = NaN;
-            } else {
-                highlightPosition = +this.highlightLocation.split(':')[1];
+            if (highlightChr === contigPosition) {
+                const highlightStart = +this.highlightLocation.split(':')[1].split('-')[0];
+                const highlightEnd = +this.highlightLocation.split(':')[1].split('-')[1];
+                let highlightRelativeX = (highlightStart - this.x0 - 1.0) / (this.x1 - this.x0);
+                let highlightRelativeW = (highlightEnd - highlightStart + 0.95) / (this.x1 - this.x0);
+                const leftBoundaryRelativeX = -0.05;
+                if (highlightRelativeX < leftBoundaryRelativeX) {
+                    highlightRelativeW -= (leftBoundaryRelativeX - highlightRelativeX);
+                    highlightRelativeX = leftBoundaryRelativeX;
+                }
+                highlightPointer.relativeX = highlightRelativeX;
+                highlightPointer.relativeW = Math.max(0.0, highlightRelativeW);
             }
-            highlightPointer.relativeX = (highlightPosition - this.x0 - 0.5) / (this.x1 - this.x0);
         }
     }
 
@@ -378,12 +384,12 @@ export class HighlightPointer extends Rect {
     constructor(style: HighlightStyle, public activeColor: ArrayLike<number>, public secondaryColor: ArrayLike<number>, axis: 'x' | 'y') {
         super(0, 0);
 
-        this.originX = -0.5;
         this.relativeH = 1;
         // this is the width, in pixels, of the highlight region
         this.w = 3;
 
         this.transparent = true;
+        this.opacity = 0.6;
 
         this.setStyle(style);
     }
