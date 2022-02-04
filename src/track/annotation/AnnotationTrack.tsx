@@ -37,7 +37,8 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
     protected readonly macroLodThresholdLow = 7;
     protected readonly macroLodThresholdHigh = this.macroLodThresholdLow + this.macroLodBlendRange;
 
-    protected readonly namesLodBlendRange = 1;
+    // VALIS-8: increased 1->4 to show annotation names at higher (zoomed out) LoD level
+    protected readonly namesLodBlendRange = 4;
     protected readonly namesLodThresholdLow = 6;
     protected readonly namesLodThresholdHigh = this.namesLodThresholdLow + this.namesLodBlendRange;
 
@@ -157,6 +158,9 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
 
         let microSamplingDensity = 1;
 
+        // VALIS-8: prevent collision between annotation names
+        const createdAnnotationNames = new Array<{geneName: string, y: number, relativeX: number, relativeW: number}>();
+
         this.getTileLoader().forEachTile(x0, x1, microSamplingDensity, true, (tile) => {
             // debug: draw red lines at tile boundaries
             if (this.debugOptions.showTileBoundaries) {
@@ -224,7 +228,6 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                         name.relativeY = geneAnnotation.relativeY;
                         name.originY = -1;
                     }
-
                     return {gene: geneAnnotation, name: name};
                 });
 
@@ -234,9 +237,36 @@ export class AnnotationTrack extends TrackObject<AnnotationTrackModel, Annotatio
                 annotation.gene.opacity = opacity;
 
                 annotation.name.visible = namesOpacity > 0;
-                annotation.name.opacity = namesOpacity;
+                // VALIS-8: no blending for gene name
+                annotation.name.opacity = Math.max(namesOpacity, 1.0);
                 annotation.name.x = 5
                 annotation.name.relativeX = Math.max(annotation.gene.relativeX, 0);
+
+                // VALIS-8: prevent collision between annotation names
+                const annotationNameWidth = annotation.name.w;
+                if (annotation.name.visible) {
+                    for (let name of createdAnnotationNames) {
+                        if (annotation.name.y === name.y && gene.name !== name.geneName) {
+                            // check gene's name to prevent multiple collision checking on the same gene
+                            // this is because if we shift gene's name to the right and if it crosses
+                            // the boundary of the current tile block then the gene is queued to the
+                            // next tile block and then revisited in the next tile loop
+                            if (annotation.name.relativeX >= name.relativeX &&
+                                annotation.name.relativeX < name.relativeX + name.relativeW) {
+                                annotation.name.relativeX = name.relativeX + name.relativeW;
+                            }
+                        }
+                    }
+                    const trackWidth = this.getComputedWidth();
+                    const spacingFactor = 0.1;
+                    // 10% (based on left name's width) spacing between two overlapping annotation names
+                    createdAnnotationNames.push({
+                        geneName: gene.name,
+                        y: annotation.name.y,
+                        relativeX: annotation.name.relativeX,
+                        relativeW: annotationNameWidth / trackWidth * (1.0 + spacingFactor)
+                    });
+                }
 
                 // add to the scene graph (auto removed when unused)
                 this._onStageAnnotations.get(annotationKey, () => {
