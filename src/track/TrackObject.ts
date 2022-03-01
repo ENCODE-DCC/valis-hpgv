@@ -160,7 +160,7 @@ export class TrackObject<
                 const highlightStart = +this.highlightLocation.split(':')[1].split('-')[0];
                 const highlightEnd = +this.highlightLocation.split(':')[1].split('-')[1];
                 let highlightRelativeX = (highlightStart - this.x0) / (this.x1 - this.x0);
-                let highlightRelativeW = (highlightEnd - highlightStart - 0.05) / (this.x1 - this.x0);
+                let highlightRelativeW = (highlightEnd - highlightStart) / (this.x1 - this.x0) - 0.002;
                 const leftBoundaryRelativeX = -0.05;
                 if (highlightRelativeX < leftBoundaryRelativeX) {
                     highlightRelativeW -= (leftBoundaryRelativeX - highlightRelativeX);
