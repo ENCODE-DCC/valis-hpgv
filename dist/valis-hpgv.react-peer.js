@@ -47431,8 +47431,8 @@ var TrackObject = /** @class */ (function (_super) {
             if (highlightChr === contigPosition) {
                 var highlightStart = +this.highlightLocation.split(':')[1].split('-')[0];
                 var highlightEnd = +this.highlightLocation.split(':')[1].split('-')[1];
-                var highlightRelativeX = (highlightStart - this.x0 - 1.0) / (this.x1 - this.x0);
-                var highlightRelativeW = (highlightEnd - highlightStart + 0.95) / (this.x1 - this.x0);
+                var highlightRelativeX = (highlightStart - this.x0) / (this.x1 - this.x0);
+                var highlightRelativeW = (highlightEnd - highlightStart - 0.05) / (this.x1 - this.x0);
                 var leftBoundaryRelativeX = -0.05;
                 if (highlightRelativeX < leftBoundaryRelativeX) {
                     highlightRelativeW -= (leftBoundaryRelativeX - highlightRelativeX);
